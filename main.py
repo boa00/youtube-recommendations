@@ -3,7 +3,7 @@ from random import shuffle
 from sending_email import send_email
 from model_building import make_recommendations
 
-# randomly select n liked videos and create recommendations based on them 
+# randomly select n=3 liked videos and create recommendations based on them 
 df = pd.read_csv('liked_videos_transformed.csv')
 video_ids = list(df.sample(n=3)['Video_Id'])
 print(video_ids)

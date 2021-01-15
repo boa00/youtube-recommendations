@@ -1,6 +1,7 @@
 import requests
+import secrets
 
-API_key = "AIzaSyAqUh3e9DJUowl8FE62FmrgZKykHi0ihEE"
+API_key = secrets.API_key
 URL = 'https://www.googleapis.com/youtube/v3/search'
 
 def get_relatedToVideoId_request(URL, API_key, video_id):
