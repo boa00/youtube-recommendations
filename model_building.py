@@ -44,6 +44,5 @@ def make_recommendations(video_id, df):
 		recommendation_ids.append(int(similar)-1)
 	recommendation_ids = list(set(recommendation_ids)) # remove dublicates
 	recommendations = [[related_videos['Video_Id'][x], related_videos['Title'][x]] for x in recommendation_ids]
-	#recommendations = ['https://www.youtube.com/watch?v={},{}'.format(related_videos['Video_Id'][x], related_videos['Title'][x]) for x in recommendation_ids]
 	return recommendations
 
