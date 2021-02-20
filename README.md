@@ -24,8 +24,10 @@ After that, these videos are sent in one email with links which looks like that:
 <p align="center"><img src=https://i.ibb.co/4FkZRcw/Untitled.png"></p>
 
 # Data Collection and Processing 
-TF-IDF algorithm finds most similar text documents among each other, so I had to convert videos into text, somehow. 
-I used 5 features: Video Tittle, Channel Tittle, Video Description, Tags and Subtitles. To get subtitles, I used YouTubeTranscriptApi, while the other parameters I got from requests to the official YouTube API
+TF-IDF algorithm finds most similar text documents among each other, so I had to convert videos into text, somehow. I used 5 features: Video Tittle, Channel Tittle, Video Description, Tags and Subtitles. 
+
+To get subtitles, I used YouTubeTranscriptApi, while the other parameters I got from requests to the official YouTube API
+
 Then, I concatenated everything into one big string and used TF-IDF algorithm to make recommendations. I had to transform API response into data frame with these strings two times: while converting videos from the playlist and while converting relatedToVideoId search results. As both transformations are identical, I created a separate class RequestTransformation in order to handle that
 
 # References
