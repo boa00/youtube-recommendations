@@ -1,35 +1,34 @@
-# Alternative YouTube Recommendation System
+# Альтернатива рекомендационной системе YouTube
 
 <p align="center"><img src="https://i.ibb.co/mTL0svz/You-Tube-logo.jpg" width="357" height="291"></p>
 
-I don’t like YouTube recommendation system. The reason is that you lack the control over things you get recommended: if you watch just one video on politics, then your whole feed is filled with other stupid videos about politics. My program allows to choose playlist with videos you really like, and then the recommendations are built **ONLY** on this playlist. Thus you can precisely choose what kinds of videos to get recommended
+Мне не нравится система рекомендации YouTube. Дело в том, что у тебя никакого контроля над этим процессом: если случайно посмотреть буквально один ролик про политику, то потом весь твой фид забит подобными бесполезными видео. Моя программа позволяет выбрать плейлист с роликами, которые тебе действительно нравится, после чего рекомендации строятся ТОЛЬКО на этом плейлисте. Таким образом, у меня есть полный контроль над типом видео, которые попадают в рекомендации
 
-For that purpose, I downloaded my own playlist with liked videos from YouTube and used official YouTube API to get information about videos (description, tags, etc.). Then, I used TF-IDF algorithm for selecting recommendations
+С этой целью, я скачал мой собственный плейлист понравившихся видео с YouTube и использовал официальный API YouTube чтобы получить данные о роликах (описание, теги, и т.д.). Затем, я использовал TF-IDF алгоритм для создания рекомендаций
 
-# Algorithm
+# Алгоритм
 
-Recommendations are built with a help of relatedToVideoId search of YouTube API: this method returns up to 25 videos similar to a selected one. My program improves these recommendations by selecting among relatedToVideoId search results the most relevant videos considering your preference from the playlist using TF-IDF
+Рекомендации создаются при помощи метода relatedToVideoId от YouTube API: он возвращает до 25 наиболее похожих видео на любой заданный ролик. Моя программа улучшает эти рекомендации, отбирая среди результатов поиска relatedToVideoId наиболее релевантные видео (с учетом выбранного плейлиста) с помощью TF-IDF
 
-I came up with a simple algorithm to create recommendations, here are the steps:
+Мой простой алгоритм:
 
-1. Randomly select one video from the playlist 
-2. Get 3 liked videos that are the most similar to the randomly selected one using TF-IDF
-3. Find 25 related videos using relatedToVideoId for each of the 3 videos selected in the step above
-4. Iterate over selected 3 liked videos. For each of them, using TF-IDF, find among 25 videos from relatedToVideoId one video which is most similar to the selected one and add them to array
-5. Remove duplicates from the array. As a result, we have 1-3 recommendations (on average 2.5) for each randomly selected video
+1. Случайным образом выбрать 1 ролик из плейлиста
+2. С помощью TF-IDF алгоритма найти 3 видео из плейлиста который наиболее похожи на ролик из первого пункта
+3. Для каждого из 3 роликов из прошлого пункта найти 25 наиболее похожих видео, используя метод relatedToVideoId. 
+4. Для каждого из 3 роликов выбрать из 25 видео одно наиболее похожее, используя TF-IDF алгоритм
+5. Убрать повторяющиеся видео. В результате выходит 1-3 (в среднем 2.5 где-то) рекомендации на каждое случайно выбранное видео 
 
-Repeat the process above for as many videos as you want, depending on how many recommended videos at once you wish to receive (I chose n = 3, so I get 7-10 recommendations per time, on average). In general, the choice numbers above is quite arbitrary, but I find this combination the most convenient. 
-After that, these videos are sent in one email with links which looks like that: 
+Повторить этот процесс n раз, в зависимости от желаемого количества рекомендаций (я выбрал n = 3, т.е. в среднем 7-10 рекомендаций за раз). В целом, указанные в алгоритме цифры были выбраны достаточно произвольно, но для меня такая комбинация оказалась наиболее удобна. После всего этого процесса, рекомендации отправляются по почте вот в таком виде:
 
 <p align="center"><img src=https://i.ibb.co/4FkZRcw/Untitled.png"></p>
 
 # Data Collection and Processing 
-TF-IDF algorithm finds most similar text documents among each other, so I had to convert videos into text, somehow. I used 5 features: Video Tittle, Channel Tittle, Video Description, Tags and Subtitles. 
+Суть TF-IDF алгоритма в том, что он находит наиболее похожие текстовые документы между собой. Поэтому, мне надо было конвертировать видео в текст. Для этого, я использовал 5 features: название видео, название канала, описание ролика, теги и субтитры.
 
-To get subtitles, I used YouTubeTranscriptApi, while the other parameters I got from requests to the official YouTube API
-
-Then, I concatenated everything into one big string and used TF-IDF algorithm to make recommendations. I had to transform API response into data frame with these strings two times: while converting videos from the playlist and while converting relatedToVideoId search results. As both transformations are identical, I created a separate class RequestTransformation in order to handle that
+Чтобы получить субтитры, я использовал YouTubeTranscriptApi, в то время какие остальные параметры я нашел через официальный API от YouTube 
+Затем, для каждого ролика я объединил все эти строки в один большой текстовый документ и уже на нем использовал TF-IDF алгоритм. Мне приходилось трансформировать результаты API запроса в удобный DataFrame дважды: когда обрабатывал видео из плейлиста, а также когда обрабатывал ролики от relatedToVideoId. Формат обоих запросов одинаковый, поэтому я создал отдельный класс RequestTransformation для их обработки
 
 # References
-- Official YouTube API: https://developers.google.com/youtube/v3
-- YouTubeTranscriptApi for parsing video subtitles: https://github.com/jdepoix/youtube-transcript-api 
+- Официальный YouTube API: https://developers.google.com/youtube/v3
+- YouTubeTranscriptApi для парсинга субтитров из видео: https://github.com/jdepoix/youtube-transcript-api
+
