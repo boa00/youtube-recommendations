@@ -24,7 +24,7 @@ English version: [README_eng.md](https://github.com/boa00/youtube-recommendation
 
 <p align="center"><img src=https://i.ibb.co/4FkZRcw/Untitled.png"></p>
 
-# Data Collection and Processing 
+# Сбор и Обработка Данных 
 Суть TF-IDF алгоритма в том, что он находит наиболее похожие текстовые документы между собой. Поэтому, мне надо было конвертировать видео в текст. Для этого, я использовал 5 features: название видео, название канала, описание ролика, теги и субтитры.
 
 Чтобы получить субтитры, я использовал YouTubeTranscriptApi, в то время какие остальные параметры я нашел через официальный API от YouTube 
